@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Documents</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Department</th>
+                <th>Uploaded At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for doc in documents %}
+            <tr>
+                <td>{{ doc.title }}</td>
+                <td>{{ doc.status }}</td>
+                <td>{{ doc.department }}</td>
+                <td>{{ doc.uploaded_at }}</td>
+                <td>
+                    <a href="/analysis/view/{{ doc.id }}/" class="btn btn-info btn-sm">View Analysis</a>
+                    <a href="/analysis/launch/{{ doc.id }}/" class="btn btn-success btn-sm">Launch Analysis</a>
+                    <a href="/audits/generate/{{ doc.id }}/" class="btn btn-secondary btn-sm">Generate Audit Report</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
