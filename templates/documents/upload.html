@@ -1,11 +1,18 @@
-{% extends 'core/base.html' %}
+{% extends 'base.html' %}
+{% block title %}Upload Document{% endblock %}
 {% block content %}
 <div class="container mt-5">
-    <h2>Upload Document</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Upload</button>
-    </form>
+    <div class="card mx-auto" style="max-width:600px;">
+        <div class="card-header">
+            <h5>Upload Document</h5>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock %}

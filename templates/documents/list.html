@@ -1,32 +1,39 @@
-{% extends 'core/base.html' %}
+{% extends 'base.html' %}
+{% block title %}Documents{% endblock %}
 {% block content %}
-<div class="container mt-5">
-    <h2>Documents</h2>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Status</th>
-                <th>Department</th>
-                <th>Uploaded At</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for doc in documents %}
-            <tr>
-                <td>{{ doc.title }}</td>
-                <td>{{ doc.status }}</td>
-                <td>{{ doc.department }}</td>
-                <td>{{ doc.uploaded_at }}</td>
-                <td>
-                    <a href="/analysis/view/{{ doc.id }}/" class="btn btn-info btn-sm">View Analysis</a>
-                    <a href="/analysis/launch/{{ doc.id }}/" class="btn btn-success btn-sm">Launch Analysis</a>
-                    <a href="/audits/generate/{{ doc.id }}/" class="btn btn-secondary btn-sm">Generate Audit Report</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div class="container-fluid mt-4">
+    <h2 class="mb-3">Documents</h2>
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Title</th>
+                    <th>Department</th>
+                    <th>Uploaded by</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for doc in documents %}
+                <tr>
+                    <td>{{ doc.title }}</td>
+                    <td>{{ doc.department }}</td>
+                    <td>{{ doc.uploaded_by }}</td>
+                    <td>{{ doc.status }}</td>
+                    <td>{{ doc.uploaded_at }}</td>
+                    <td>
+                        <a href="{% url 'view_analysis' doc.id %}" class="btn btn-sm btn-info">View</a>
+                        <a href="{% url 'launch_analysis' doc.id %}" class="btn btn-sm btn-success">Analyze</a>
+                        {% if user.role == 'ADMIN' %}
+                        <a href="{% url 'documents_delete' doc.id %}" class="btn btn-sm btn-danger">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

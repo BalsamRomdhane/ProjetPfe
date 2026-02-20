@@ -1,11 +1,79 @@
-{% extends 'core/base.html' %}
+{% extends 'base.html' %}
+{% block title %}Department Dashboard{% endblock %}
 {% block content %}
-<div class="container mt-5">
-    <h2>Department Dashboard</h2>
-    <ul>
-        <li><a href="/documents/list/">Department Documents</a></li>
-        <li><a href="/analysis/">Department Score</a></li>
-        <li><a href="/analysis/">Launch Analysis</a></li>
-    </ul>
+<div class="container-fluid mt-4">
+    <h2 class="mb-4">Department Dashboard</h2>
+    <div class="row g-3">
+        <div class="col-md-4">
+            <div class="card border-primary">
+                <div class="card-body">
+                    <h5 class="card-title">Compliance Score</h5>
+                    <p class="card-text display-6">{{ dept_compliance }}%</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-success">
+                <div class="card-body">
+                    <h5 class="card-title">Total Documents</h5>
+                    <p class="card-text display-6">{{ dept_documents }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-info">
+                <div class="card-body">
+                    <h5 class="card-title">Department Users</h5>
+                    <p class="card-text display-6">{{ dept_users }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">Compliance Trend</div>
+                <div class="card-body">
+                    <canvas id="chartComplianceTrend"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Documents</span>
+                    <button class="btn btn-sm btn-primary" id="launchAnalysis">Launch Analysis</button>
+                </div>
+                <div class="card-body table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for doc in documents %}
+                            <tr>
+                                <td>{{ doc.title }}</td>
+                                <td>{{ doc.status }}</td>
+                                <td>{{ doc.uploaded_at }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+{% endblock %}
+{% block extra_js %}
+<script>
+const trendData = {{ compliance_trend|safe }};
+new Chart(document.getElementById('chartComplianceTrend'), {type:'line',data:trendData});
+</script>
 {% endblock %}

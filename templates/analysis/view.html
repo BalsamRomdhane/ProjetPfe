@@ -1,12 +1,44 @@
-{% extends 'core/base.html' %}
+{% extends 'base.html' %}
+{% block title %}Analysis Result{% endblock %}
 {% block content %}
-<div class="container mt-5">
-    <h2>Analysis Result</h2>
+<div class="container mt-4">
+    <h2 class="mb-3">Analysis Result</h2>
     {% if analysis %}
-        <p><strong>Compliance Score:</strong> {{ analysis.compliance_score }}%</p>
-        <p><strong>Details:</strong> {{ analysis.details }}</p>
+        <div class="mb-3">
+            <h5>Compliance Score</h5>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: {{ analysis.compliance_score }}%;" aria-valuenow="{{ analysis.compliance_score }}" aria-valuemin="0" aria-valuemax="100">{{ analysis.compliance_score }}%</div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">Covered ISO Clauses</div>
+                    <div class="card-body">
+                        <ul>
+                            {% for clause in analysis.covered_clauses %}<li>{{ clause }}</li>{% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">Missing Clauses</div>
+                    <div class="card-body">
+                        <ul>
+                            {% for clause in analysis.missing_clauses %}<li>{{ clause }}</li>{% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <h5>Recommendations</h5>
+            <p>{{ analysis.recommendations }}</p>
+        </div>
+        {% if analysis.download_url %}<a href="{{ analysis.download_url }}" class="btn btn-primary mt-3">Download PDF Report</a>{% endif %}
     {% else %}
-        <p>No analysis available for this document.</p>
+        <div class="alert alert-warning">No analysis available for this document.</div>
     {% endif %}
 </div>
 {% endblock %}

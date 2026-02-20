@@ -1,12 +1,96 @@
-{% extends 'core/base.html' %}
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
 {% block content %}
-<div class="container mt-5">
-    <h2>Admin Dashboard</h2>
-    <ul>
-        <li><a href="/admin/">Manage Users</a></li>
-        <li><a href="/documents/list/">View All Documents</a></li>
-        <li><a href="/analysis/">Global Compliance Score</a></li>
-        <li><a href="/">View All Departments</a></li>
-    </ul>
+<div class="container-fluid mt-4">
+    <h2 class="mb-4">Admin Dashboard</h2>
+    <div class="row g-3">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">Global Compliance</h5>
+                    <p class="card-text display-6">{{ global_compliance }}%</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <h5 class="card-title">Total Users</h5>
+                    <p class="card-text display-6">{{ total_users }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <h5 class="card-title">Total Documents</h5>
+                    <p class="card-text display-6">{{ total_documents }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-danger">
+                <div class="card-body">
+                    <h5 class="card-title">Non‑conformities</h5>
+                    <p class="card-text display-6">{{ total_nonconformities }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Compliance per Department</div>
+                <div class="card-body">
+                    <canvas id="chartComplianceDept"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Users per Department</div>
+                <div class="card-body">
+                    <canvas id="chartUsersDept"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">Recent Documents</div>
+                <div class="card-body table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Department</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for doc in recent_documents %}
+                            <tr>
+                                <td>{{ doc.title }}</td>
+                                <td>{{ doc.department }}</td>
+                                <td>{{ doc.status }}</td>
+                                <td>{{ doc.uploaded_at }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+{% endblock %}
+{% block extra_js %}
+<script>
+const complianceData = {{ compliance_by_dept|safe }};
+const usersData = {{ users_by_dept|safe }};
+new Chart(document.getElementById('chartComplianceDept'), {type:'bar',data:complianceData});
+new Chart(document.getElementById('chartUsersDept'), {type:'bar',data:usersData});
+</script>
 {% endblock %}

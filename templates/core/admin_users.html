@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block title %}Manage Users{% endblock %}
+{% block content %}
+<div class="container-fluid mt-4">
+    <h2 class="mb-3">User Management</h2>
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <select class="form-select" id="filterDept">
+                <option value="">All Departments</option>
+                {% for d in departments %}<option value="{{ d.name }}">{{ d.name }}</option>{% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" id="filterRole">
+                <option value="">All Roles</option>
+                <option value="ADMIN">ADMIN</option>
+                <option value="TEAMLEAD">TEAMLEAD</option>
+                <option value="EMPLOYEE">EMPLOYEE</option>
+            </select>
+        </div>
+        <div class="col-md-6 text-end">
+            <button class="btn btn-primary" id="addUserBtn">Add User</button>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body table-responsive">
+            <table class="table table-striped align-middle" id="usersTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Department</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in users %}
+                    <tr>
+                        <td>{{ u.username }}</td>
+                        <td>{{ u.email }}</td>
+                        <td>{{ u.role }}</td>
+                        <td>{{ u.department }}</td>
+                        <td>
+                            <button class="btn btn-sm btn-secondary editUserBtn" data-id="{{ u.id }}">Edit</button>
+                            <button class="btn btn-sm btn-danger deleteUserBtn" data-id="{{ u.id }}">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modals -->
+<div class="modal fade" id="userModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="userForm">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add / Edit User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="user_id" id="user_id">
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input type="text" class="form-control" name="username" id="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" name="email" id="email">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Role</label>
+                        <select class="form-select" name="role" id="role">
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="TEAMLEAD">TEAMLEAD</option>
+                            <option value="EMPLOYEE">EMPLOYEE</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Department</label>
+                        <select class="form-select" name="department" id="department">
+                            {% for d in departments %}<option value="{{ d.name }}">{{ d.name }}</option>{% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% block extra_js %}
+<script>
+// JavaScript to handle modal open, filtering could go here
+</script>
+{% endblock %}

@@ -1,11 +1,12 @@
-{% extends 'core/base.html' %}
+{% extends 'base.html' %}
+{% block title %}Home - ISO 9001 IDMS{% endblock %}
 {% block content %}
-<div class="container mt-5">
-    <div class="jumbotron text-center">
-        <h1>Welcome to ISO 9001 Intelligent Document Management System</h1>
+<div class="container-fluid vh-100 d-flex align-items-center justify-content-center">
+    <div class="text-center">
+        <h1 class="display-4">ISO 9001 Intelligent Document Management System</h1>
         <p class="lead">Secure, compliant, and intelligent document management for your organization.</p>
         {% if not user.is_authenticated %}
-            <a href="/accounts/login/" class="btn btn-primary btn-lg">Login</a>
+            <a href="{% url 'login' %}" class="btn btn-primary btn-lg mt-3">Login</a>
         {% endif %}
     </div>
 </div>
